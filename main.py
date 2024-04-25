@@ -17,6 +17,5 @@ class Blockchain(object):
         newBlock = self.proofOfWorkForBlock(newBlock, difficulty=4)
         if newBlock:
             self._chain.append(newBlock)
-            self._pendingData.removeDuplicates(self._dataToIncludeInNewBlock, dataCompareFunction())
-
-
+            self._pendingData.removeDuplicates(self._dataToIncludeInNewBlock, dataCompareFunction)
+            self._dataToIncludeInNewBlock = []
