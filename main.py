@@ -80,4 +80,13 @@ class Blockchain(object):
         def proofofWorkForBlock(self, block, difficulty):
             pass
 
-        def addNewTransaction(self, transaction):
+        def addNewTransaction(self, sender, recipient, amount, document, signatureOfDocument):
+            data = {
+                "uuid": uuid.uuid4().hex,
+                "dataType": self.DATA_TYPE.TRANSACTION,
+                "sender": sender,
+                "recipient": recipient,
+                "amount": amount,
+                "document": document,
+                "signatureOfDocument": signatureOfDocument,
+            }
