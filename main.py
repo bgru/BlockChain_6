@@ -88,5 +88,5 @@ class Blockchain(object):
                 "recipient": recipient,
                 "amount": amount,
                 "document": document,
-                "signatureOfDocument": signatureOfDocument,
+                "senderSignature": signatureOfDocument,
             }
