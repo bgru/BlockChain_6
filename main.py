@@ -143,6 +143,7 @@ class Blockchain(object):
             self._pendingData._list = data["pendingData"]
             self._dataToIncludeInNewBlock = data["dataToIncludeInNewBlock"]
 
+
 def computeMerkleTree(data):
     dataAsString = []
     dataHashes = []
@@ -154,23 +155,23 @@ def computeMerkleTree(data):
         dataAsBytes = jsonAsString.encode('utf-8')
         dataHashes.append(sha256(dataAsBytes).hexdigest())
 
-    #merkleTree = [dataAsString, dataHashes]
+    # merkleTree = [dataAsString, dataHashes]
     merkleTree = [dataHashes]
 
-    while len(merkleTree[-1])>1:
+    while len(merkleTree[-1]) > 1:
         size = len(merkleTree[-1])
         i = 0
         hashes = []
-        while i<size:
+        while i < size:
             h1 = merkleTree[-1][i]
             i += 1
-            if i==size:
+            if i == size:
                 hashes.append(h1)
                 break
             h2 = merkleTree[-1][i]
             i += 1
 
-            h = sha256(h1.encode('utf-8')+h2.encode('utf-8')).hexdigest()
+            h = sha256(h1.encode('utf-8') + h2.encode('utf-8')).hexdigest()
 
             hashes.append(h)
 
@@ -179,10 +180,10 @@ def computeMerkleTree(data):
     return merkleTree
 
 
-
 """# Class `ThreadSafeList`"""
 
 from threading import Lock
+
 
 # Custom class wrapping a list
 # in order to make it thread safe.
@@ -212,7 +213,7 @@ class ThreadSafeList():
             if size is None:
                 n = len(self._list)
             else:
-                n = min(size,len(self._list))
+                n = min(size, len(self._list))
             chunk = self._list[:n]
             return chunk
 
@@ -234,3 +235,23 @@ class ThreadSafeList():
                     listLocal.append(self._list[e])
 
             self._list = listLocal
+
+
+if __name__ == "__main__":
+    blockchain = Blockchain()
+    sender = "Bilbo Baggins"
+    recipient = "Elrond"
+    amount = "Lembas, 2kg"
+    document = {"sender": sender, "recipient": recipient, "amount": amount}
+    signatureOfDocument = "XYZ"
+    blockchain.addNewTransaction(sender, recipient, amount, document, signatureOfDocument)
+
+    print(blockchain._chain)
+    print(blockchain._pendingData._list)
+    print(blockchain._dataToIncludeInNewBlock)
+
+    blockchain.addNewBlock()
+
+    print(blockchain._chain)
+    print(blockchain._pendingData._list)
+    print(blockchain._dataToIncludeInNewBlock)
