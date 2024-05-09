@@ -90,3 +90,25 @@ class Blockchain(object):
                 "document": document,
                 "senderSignature": signatureOfDocument,
             }
+            self._pendingData.push(data)
+
+        def hashBlock(self, block):
+            blockAsBytes = json.dumps(block, sort_keys=True).encode('utf-8')
+            return sha256(blockAsBytes).hexdigest()
+
+        def saveBlockBlockchain(self):
+            data = {
+                "chain": self._chain,
+                "pendingData": self._pendingData._list,
+                "dataToIncludeInNewBlock": self._dataToIncludeInNewBlock,
+            }
+            with open('blockchain.txt', 'w') as fileData:
+                json.dump(data, fileData)
+
+        def loadBlockBlockchain(self):
+            with open('blockchain.txt', 'r') as fileData:
+                data = json.load(fileData)
+
+                self.chain = data["chain"]
+                self.pendingData = data["pendingData"]
+                self.dataToIncludeInNewBlock = data["dataToIncludeInNewBlock"]
